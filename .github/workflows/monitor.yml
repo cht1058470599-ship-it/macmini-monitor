@@ -2,9 +2,9 @@ name: Mac mini 官翻库存监控
 
 on:
   schedule:
-    # 每 30 分钟检查一次（UTC 时间，对应北京时间 +8h）
-    # 避开整点高峰，GitHub 建议 offset
-    - cron: '13,43 * * * *'
+    # 每 5 分钟检查一次（UTC 时间，对应北京时间 +8h）
+    # 错峰 2 分钟，避开 GitHub 整点高峰
+    - cron: '2,7,12,17,22,27,32,37,42,47,52,57 * * * *'
   workflow_dispatch:  # 支持手动触发
 
 jobs:
