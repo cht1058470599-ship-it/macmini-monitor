@@ -1,0 +1,31 @@
+name: Mac mini 官翻库存监控
+
+on:
+  schedule:
+    # 每 30 分钟检查一次（UTC 时间，对应北京时间 +8h）
+    # 避开整点高峰，GitHub 建议 offset
+    - cron: '13,43 * * * *'
+  workflow_dispatch:  # 支持手动触发
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    concurrency:
+      group: macmini-monitor
+      cancel-in-progress: true
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 设置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 运行监控脚本
+        env:
+          PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
+          TZ: Asia/Shanghai
+        run: python monitor.py
